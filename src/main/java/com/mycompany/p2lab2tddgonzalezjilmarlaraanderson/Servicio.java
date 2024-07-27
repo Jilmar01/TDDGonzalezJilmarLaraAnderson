@@ -28,6 +28,10 @@ public class Servicio {
                     buscarEmpleado();
                 case 3 ->
                     listarEmpleados();
+                case 4 ->
+                    ActualizarEmpleado();
+                //case 5 ->
+                                       
                 case 6 ->
                     System.out.println("\nVuelva pronto");
                 default ->
@@ -96,9 +100,10 @@ public class Servicio {
         System.out.println("\nBuscar Empleado");
         System.out.print("\nIngrese el nombre del empleado: ");
         String nombre = sc.nextLine();
-        System.out.println("\nDatos del Empleado");
+        
         for (Empleado emp : listaEmpleados) {
             if (emp.nombre.toLowerCase().equals(nombre.toLowerCase())) {
+                System.out.println("\nDatos del Empleado");
                 System.out.println("\n----------------------------------");
                 System.out.println("Nombre:       " + emp.nombre);
                 System.out.println("Edad:         " + emp.edad);
@@ -109,12 +114,12 @@ public class Servicio {
                 empleado = emp;
                 break;
             }
+            System.out.println("\nEmpleado no existe");
         }
         return empleado;
     }
 
     public static void registrarEmpleado(int opc) {
-
         Scanner sc = new Scanner(System.in);
         System.out.print("Ingrese el nombre: ");
         String nombre = sc.nextLine();
@@ -147,4 +152,43 @@ public class Servicio {
         }
     }
 
+    public static void ActualizarEmpleado(){
+        Scanner sc = new Scanner(System.in);
+        int i=0;
+        if (listaEmpleados.isEmpty()) {
+            System.out.println("\nNo hay Empleados registrados");
+            return;
+        }
+        System.out.println("\nActualizar Información Empleado");
+        System.out.print("\nIngrese el nombre del empleado: ");
+        String nombre = sc.nextLine();
+        
+        for (Empleado emp : listaEmpleados) {
+            
+            if (emp.nombre.toLowerCase().equals(nombre.toLowerCase())) {
+                System.out.println("\nDatos del Empleado");
+                EmpleadoTiempoCompleto aux1;
+                EmpleadoTiempoParcial  aux2;
+                System.out.print("\nIngrese el nombre: ");
+                String nombre2 = sc.nextLine();
+                System.out.print("Ingrese la edad: ");
+                String edad = sc.nextLine();
+                System.out.print("Ingrese el departamento: ");
+                String depar = sc.nextLine();
+                System.out.print("Ingrese salario: ");
+                double sueldo = sc.nextDouble(); 
+                if(emp.toString().compareToIgnoreCase("Completo")==0){
+                    aux1=new EmpleadoTiempoCompleto(nombre2,edad,depar,sueldo);
+                    listaEmpleados.set(i, aux1);
+                }else{
+                    aux2=new EmpleadoTiempoParcial(nombre2,edad,depar,sueldo);
+                    listaEmpleados.set(i, aux2);
+                }     
+                break;
+            }
+            i++;  
+        }
+       
+    }
+    
 }
