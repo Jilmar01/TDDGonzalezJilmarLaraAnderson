@@ -205,7 +205,8 @@ public class Servicio {
         for (Empleado emp : listaEmpleados) {            
             if (emp.nombre.toLowerCase().equals(nombre.toLowerCase())) {
                 listaEmpleados.remove(i);
-                break;
+                System.out.println("Empleado:"+emp.nombre+", Eliminado con éxito");
+                break;                
             }
             i++;  
         }
