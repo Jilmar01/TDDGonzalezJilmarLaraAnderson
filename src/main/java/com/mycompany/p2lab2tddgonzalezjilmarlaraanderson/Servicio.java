@@ -12,6 +12,7 @@ public class Servicio {
     private static Empleado empleado;
     private static List<Empleado> listaEmpleados;
     public static Scanner sc;
+    private static Validations valid=new Validations();
 
     public void servicio() {
 
@@ -120,26 +121,57 @@ public class Servicio {
     }
 
     public static void registrarEmpleado(int opc) {
-        Scanner sc = new Scanner(System.in);
+         Scanner sc = new Scanner(System.in);
+        
         System.out.print("Ingrese el nombre: ");
         String nombre = sc.nextLine();
+        while (valid.validEmpty(nombre)) {
+            System.out.print("\nIngrese un nombre: ");
+            nombre = sc.nextLine();
+        }
         System.out.print("Ingrese la edad: ");
         String edad = sc.nextLine();
+        while (valid.validEmpty(edad) || !valid.validNumber(edad) ||
+                valid.validAmougInt(edad, 18d, 80d)) {
+            if (valid.validEmpty(edad)) {
+                System.out.println("La edad no puede estar vacía.");
+            } else if (!valid.validNumber(edad)) {
+                System.out.println("Ingrese un número válido.");
+            } else if (valid.validAmougInt(edad, 18d, 80d)) {
+                System.out.println("La edad debe estar entre 18 y 80.");
+            }
+            System.out.print("Ingrese una edad: ");
+            edad = sc.nextLine();
+        }
         System.out.print("Ingrese el departamento: ");
         String depar = sc.nextLine();
         System.out.print("Ingrese salario: ");
         double sueldo = sc.nextDouble();
-
+        while (valid.validEmptyDouble(sueldo) ||
+                valid.validAmougDouble(sueldo, 200d, 800d)) {
+            if (valid.validEmptyDouble(sueldo)) {
+                System.out.println("\nEl salario no puede estar vacío.");
+            } else if (valid.validAmougDouble(sueldo, 200d, 800d)) {
+                System.out.println("\nSalario debe estar entre 200 y 800 $");
+            }
+            System.out.print("Ingrese salario: ");
+            sueldo = sc.nextDouble();
+        }
         if (opc == 1) {
             gc = new EmpleadoTiempoCompleto(nombre, edad, depar, sueldo);
         } else if (opc == 2) {
             gc = new EmpleadoTiempoParcial(nombre, edad, depar, sueldo);
         }
-
         listaEmpleados.add((Empleado) gc);
+        System.out.println("Empleado registrado correctamente.");
+    
     }
 
     public static void listarEmpleados() {
+        if(listaEmpleados.isEmpty()){
+            System.out.println("\nNo hay empleados registrados\n");
+            return;
+        }
         System.out.println("\nLista de todos los empleados\n");
         for (Empleado emp : listaEmpleados) {
             System.out.println("----------------------------------");
@@ -152,9 +184,9 @@ public class Servicio {
         }
     }
 
-    public static void ActualizarEmpleado(){
+    public static void ActualizarEmpleado() {
         Scanner sc = new Scanner(System.in);
-        int i=0;
+        int i = 0;
         if (listaEmpleados.isEmpty()) {
             System.out.println("\nNo hay Empleados registrados");
             return;
@@ -162,34 +194,55 @@ public class Servicio {
         System.out.println("\nActualizar Información Empleado");
         System.out.print("\nIngrese el nombre del empleado: ");
         String nombre = sc.nextLine();
-        
         for (Empleado emp : listaEmpleados) {
-            
             if (emp.nombre.toLowerCase().equals(nombre.toLowerCase())) {
                 System.out.println("\nDatos del Empleado");
-                EmpleadoTiempoCompleto aux1;
-                EmpleadoTiempoParcial  aux2;
                 System.out.print("\nIngrese el nombre: ");
                 String nombre2 = sc.nextLine();
+                while (valid.validEmpty(nombre2)) {
+                    System.out.print("\nIngrese un nombre: ");
+                    nombre2 = sc.nextLine();
+                }
                 System.out.print("Ingrese la edad: ");
                 String edad = sc.nextLine();
+                while (valid.validEmpty(edad) || !valid.validNumber(edad) || valid.validAmougInt(edad, 18d, 80d)) {
+                    if (valid.validEmpty(edad)) {
+                        System.out.println("La edad no puede estar vacía.");
+                    } else if (!valid.validNumber(edad)) {
+                        System.out.println("Ingrese un número válido.");
+                    } else if (valid.validAmougInt(edad, 18d, 80d)) {
+                        System.out.println("La edad debe estar entre 18 y 80.");
+                    }
+                    System.out.print("Ingrese una edad: ");
+                    edad = sc.nextLine();
+                }
                 System.out.print("Ingrese el departamento: ");
                 String depar = sc.nextLine();
                 System.out.print("Ingrese salario: ");
-                double sueldo = sc.nextDouble(); 
-                if(emp.toString().compareToIgnoreCase("Completo")==0){
-                    aux1=new EmpleadoTiempoCompleto(nombre2,edad,depar,sueldo);
+                double sueldo = sc.nextDouble();
+                while (valid.validEmptyDouble(sueldo) || valid.validAmougDouble(sueldo, 200d, 800d)) {
+                    if (valid.validEmptyDouble(sueldo)) {
+                        System.out.println("\nEl salario no puede estar vacío.");
+                    } else if (valid.validAmougDouble(sueldo, 200d, 800d)) {
+                        System.out.println("\nSalario debe estar entre 200 y 800 $");
+                    }
+                    System.out.print("Ingrese salario: ");
+                    sueldo = sc.nextDouble();
+                }
+                if (emp instanceof EmpleadoTiempoCompleto) {
+                    EmpleadoTiempoCompleto aux1 = new EmpleadoTiempoCompleto(nombre2, edad, depar, sueldo);
                     listaEmpleados.set(i, aux1);
-                }else{
-                    aux2=new EmpleadoTiempoParcial(nombre2,edad,depar,sueldo);
+                } else if (emp instanceof EmpleadoTiempoParcial) {
+                    EmpleadoTiempoParcial aux2 = new EmpleadoTiempoParcial(nombre2, edad, depar, sueldo);
                     listaEmpleados.set(i, aux2);
-                }     
+                }
+                System.out.println("Empleado actualizado correctamente.");
                 break;
             }
-            i++;  
+            i++;
         }
-       
     }
+
     
     public static void EliminarEmpleado(){
         Scanner sc = new Scanner(System.in);
