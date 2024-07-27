@@ -30,8 +30,8 @@ public class Servicio {
                     listarEmpleados();
                 case 4 ->
                     ActualizarEmpleado();
-                //case 5 ->
-                                       
+                case 5 ->
+                     EliminarEmpleado();                  
                 case 6 ->
                     System.out.println("\nVuelva pronto");
                 default ->
@@ -184,6 +184,27 @@ public class Servicio {
                     aux2=new EmpleadoTiempoParcial(nombre2,edad,depar,sueldo);
                     listaEmpleados.set(i, aux2);
                 }     
+                break;
+            }
+            i++;  
+        }
+       
+    }
+    
+    public static void EliminarEmpleado(){
+        Scanner sc = new Scanner(System.in);
+        int i=0;
+        if (listaEmpleados.isEmpty()) {
+            System.out.println("\nNo hay Empleados registrados");
+            return;
+        }
+        System.out.println("\nEliminar Empleado");
+        System.out.print("\nIngrese el nombre del empleado: ");
+        String nombre = sc.nextLine();
+        
+        for (Empleado emp : listaEmpleados) {            
+            if (emp.nombre.toLowerCase().equals(nombre.toLowerCase())) {
+                listaEmpleados.remove(i);
                 break;
             }
             i++;  
